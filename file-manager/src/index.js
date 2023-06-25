@@ -3,6 +3,8 @@ import { fileURLToPath } from "url";
 import { argv } from 'node:process';
 import { createInterface } from 'node:readline/promises'
 import { getUserName, welcome, goodbye } from './helpers/userHelper.js'
+import { printWorkingDirectory } from './helpers/fileHelper.js'
+
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -14,7 +16,7 @@ try {
 
     const username = getUserName(args);
     welcome(username);
-    console.log(`You are currently in  ${__dirname}!`);
+    printWorkingDirectory();
 
     const readerLine = createInterface({
         input: process.stdin,
