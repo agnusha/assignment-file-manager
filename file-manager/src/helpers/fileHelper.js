@@ -1,8 +1,5 @@
-import { cwd } from 'node:process';
-
-function printWorkingDirectory() {
-    console.log(`You are currently in ${cwd()}`);
+function printWorkingDirectory(directory) {
+    console.log(`You are currently in ${directory}`);
 }
 
-
-export { printWorkingDirectory };
+export { printWorkingDirectory }; dler
