@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "start": "node src/index.js",
+    "start-name": "node src/index.js --username=Agnusha"
   },
-  "author": "",
+  "author": "Ahniya Staravoitava",
   "license": "ISC"
 }
