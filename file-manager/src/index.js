@@ -1,14 +1,11 @@
-import { argv, cwd, stdin, stdout } from 'node:process';
+import { cwd, stdin, stdout } from 'node:process';
 import { createInterface } from 'node:readline/promises';
-
 import UserPrintService from './services/UserPrintService.js';
-
 import { printWorkingDirectory } from './helpers/fileHelper.js';
 import { executeLine } from './services/executer.js';
 
 try {
-    const args = argv.slice(2);
-    const userService = new UserPrintService(args);
+    const userService = new UserPrintService();
     userService.welcome();
 
     const readerLine = createInterface(stdin, stdout);

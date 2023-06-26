@@ -11,10 +11,10 @@ function validateIsSet(arg) {
 async function validateIsPathExist(arg, shouldExist = true) {
     validateIsSet(arg);
     if (shouldExist && !await isExists(arg)) {
-        throw new InvalidInputException(`file ${arg} should exist`);
+        throw new Error(`File ${arg} should exist`);
     }
     if (!shouldExist && await isExists(arg)) {
-        throw new InvalidInputException(`file ${arg} shouldn't exist`);
+        throw new Error(`File ${arg} shouldn't exist`);
     }
     return arg;
 }

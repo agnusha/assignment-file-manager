@@ -1,7 +1,9 @@
+import { argv } from 'node:process';
 import { validateIsSet } from '../validation/argValidator.js';
 
 class UserPrintService {
-    constructor(args) {
+    constructor() {
+        const args = argv.slice(2);
         this.username = validateIsSet(UserPrintService.getUserName(args));
     }
 
