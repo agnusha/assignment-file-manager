@@ -33,14 +33,11 @@ async function list(directory) {
 }
 
 function printList(directories, files) {
-    console.log('Folders and files');
-    directories.forEach((directory, i) => {
-        console.log(`${i} - ${directory} - folder`);
-    });
+    const dataPrinted = [];
+    directories.forEach((d) => dataPrinted.push({ Name: d, Type: 'Folder' }));
+    files.forEach((f) => dataPrinted.push({ Name: f, Type: 'File' }));
 
-    files.forEach((file, i) => {
-        console.log(`${directories.length + i} - ${file} - file`);
-    });
+    console.table(dataPrinted);
 }
 
 export { goUp, goToDirectory, list };
