@@ -1,9 +1,9 @@
-import { argv, cwd } from 'node:process';
+import { argv, cwd, stdin, stdout } from 'node:process';
 import { createInterface } from 'node:readline/promises';
 
 import { getUserName, welcome, goodbye } from './helpers/userHelper.js';
 import { printWorkingDirectory } from './helpers/fileHelper.js';
-import { validateIsSet } from './validation/argValidator.js';
+import { validateIsSet, validateIsPathExist } from './validation/argValidator.js';
 
 import { goUp, goToDirectory, list } from './handlers/navigation.js';
 import { readFile, createEmptyFile, renameFile, copyFile, moveFile, deleteFile } from './handlers/file.js';
@@ -11,21 +11,14 @@ import { os } from './handlers/os.js'
 import { hashFile } from './handlers/hash.js'
 import { compressFile, decompressFile } from './handlers/compression.js'
 
-
-
-const args = argv.slice(2);
-
 try {
-
+    const args = argv.slice(2);
     const username = getUserName(args);
+
     validateIsSet(username);
     welcome(username);
 
-    const readerLine = createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-
+    const readerLine = createInterface(stdin, stdout);
     let __dirname = updateDirname(readerLine);
 
     readerLine
@@ -38,51 +31,50 @@ try {
                     goUp(__dirname);
                     break;
                 case 'cd':
-                    goToDirectory(args[0]);
+                    goToDirectory(await validateIsPathExist(args[0]));
                     break;
                 case 'ls':
                     await list(__dirname);
                     break;
 
                 case 'cat':
-                    await readFile(args[0]);
+                    await readFile(await validateIsPathExist(args[0]));
                     break;
                 case 'add':
-                    await createEmptyFile(args[0])
+                    await createEmptyFile(await validateIsPathExist(args[0], false))
                     break;
                 case 'rn':
-                    await renameFile(args[0], args[1])
+                    await renameFile(await validateIsPathExist(args[0]), validateIsSet(args[1]))
                     break;
                 case 'cp':
-                    await copyFile(args[0], args[1]);
+                    await copyFile(await validateIsPathExist(args[0]), await validateIsPathExist(args[1]));
                     break;
                 case 'mv':
-                    await moveFile(args[0], args[1]);
+                    await moveFile(await validateIsPathExist(args[0]), await validateIsPathExist(args[1]));
                     break;
                 case 'rm':
-                    await deleteFile(args[0]);
+                    await deleteFile(await validateIsPathExist(args[0]));
                     break;
 
                 case 'os':
-                    os(args[0]);
+                    os(validateIsSet(args[0]));
                     break;
 
                 case 'hash':
-                    await hashFile(args[0]);
+                    await hashFile(await validateIsPathExist(args[0]));
                     break
                 case 'compress':
-                    await compressFile(args[0], args[1]);
+                    await compressFile(await validateIsPathExist(args[0]), validateIsSet(args[1]));
                     break;
                 case 'decompress':
-                    await decompressFile(args[0], args[1]);
+                    await decompressFile(await validateIsPathExist(args[0]), validateIsSet(args[1]));
                     break;
                 case '.exit':
                     readerLine.close();
                     return;
                 default:
-                    console.log('Invalid input');
+                    console.log('Invalid input: command is not a valid');
             }
-
             __dirname = updateDirname(readerLine);
         })
         .on('SIGINT', () => readerLine.close())

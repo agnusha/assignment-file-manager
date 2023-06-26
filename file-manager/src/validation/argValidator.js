@@ -6,9 +6,13 @@ function validateIsSet(arg) {
     }
 }
 
-async function validateIsPathExist(arg) {
-    if (!await isExists(arg)) {
-        throw new Error(`Invalid input: ${arg} isn't exist`);
+async function validateIsPathExist(arg, shouldExist = true) {
+    validateIsSet(arg);
+    if (shouldExist && !await isExists(arg)) {
+        throw new Error(`Invalid input: file ${arg} should exist`);
+    }
+    if (!shouldExist && await isExists(arg)) {
+        throw new Error(`Invalid input:  file ${arg} shouldn't exist`);
     }
 }
 
@@ -24,6 +28,5 @@ async function isExists(file) {
         return false;
     }
 }
-
 
 export { validateIsSet, validateIsPathExist };
