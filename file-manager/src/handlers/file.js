@@ -1,3 +1,4 @@
+//TODO: add line at the end, use async pipe instead
 async function readFile(pathToFile) {
     const readStream = createReadStream(pathToFile);
     readStream.pipe(stdout);
@@ -5,13 +6,24 @@ async function readFile(pathToFile) {
 }
 
 async function createEmptyFile(fileName) {
-    const fd = await open(fileName, 'w');
-    await fd.close();
+    const fileHandle = await open(fileName, 'w');
+    await fileHandle.close();
 }
 
 async function renameFile(pathToFile, newFileName) {
     const directory = dirname(pathToFile);
     const newPathToFile = join(directory, newFileName);
-    rename(pathToFile, newPathToFile);
+    await rename(pathToFile, newPathToFile);
+}
+
+async function copyFile(pathToFile, targetDirectory) {
+    const fileName = join(targetDirectory, basename(pathToFile));
+
+    const readStream = createReadStream(pathToFile);
+    const writeStream = createWriteStream(fileName);
+
+    await pipeline(readStream, writeStream);
+}
+
 }
 

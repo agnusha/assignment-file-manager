@@ -1,4 +1,7 @@
 #This is test file
 
 ##Comands
-rn src/data/test.md newTest.md
+
+###Basic operations with files
+- rn src/data/test.md newTest.md
+- cp src/data/test.md src/handlers
