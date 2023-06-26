@@ -3,7 +3,7 @@ import { createInterface } from 'node:readline/promises'
 import { getUserName, welcome, goodbye } from './helpers/userHelper.js'
 import { printWorkingDirectory } from './helpers/fileHelper.js'
 import { goUp, goToDirectory, list } from './handlers/navigation.js'
-import { readFile, createEmptyFile } from './handlers/file.js'
+import { readFile, createEmptyFile, renameFile, copyFile, moveFile, deleteFile } from './handlers/file.js'
 
 let __dirname = cwd();
 const args = argv.slice(2);
@@ -46,9 +46,19 @@ try {
                 case 'rn':
                     await renameFile(args[0], args[1])
                     break;
+                case 'cp':
+                    await copyFile(args[0], args[1]);
+                    break;
+                case 'mv':
+                    await moveFile(args[0], args[1]);
+                    break;
+                case 'rm':
+                    await deleteFile(args[0]);
+                    break;
 
-                default: console.log('Invalid input')
-                    break
+                default:
+                    console.log('Invalid command');
+                    break;
             }
 
             printWorkingDirectory(cwd());

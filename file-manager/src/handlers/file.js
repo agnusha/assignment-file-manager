@@ -1,3 +1,9 @@
+import { createReadStream, createWriteStream } from 'node:fs';
+import { join, dirname, basename } from 'node:path';
+import { stdout } from 'node:process';
+import { open, rename, unlink } from 'node:fs/promises';
+import { finished, pipeline } from 'node:stream/promises';
+
 //TODO: add line at the end, use async pipe instead
 async function readFile(pathToFile) {
     const readStream = createReadStream(pathToFile);
@@ -25,5 +31,13 @@ async function copyFile(pathToFile, targetDirectory) {
     await pipeline(readStream, writeStream);
 }
 
+async function moveFile(pathToFile, targetDirectory) {
+    await copyFile(pathToFile, targetDirectory);
+    deleteFile(pathToFile);
 }
 
+async function deleteFile(pathToFile) {
+    unlink(pathToFile);
+}
+
+export { readFile, createEmptyFile, renameFile, copyFile, moveFile, deleteFile };
