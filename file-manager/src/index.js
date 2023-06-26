@@ -74,11 +74,11 @@ try {
                 case 'decompress':
                     await decompressFile(args[0], args[1]);
                     break;
-
-
+                case '.exit':
+                    readerLine.close();
+                    return;
                 default:
-                    console.log('Invalid command');
-                    break;
+                    console.log('Invalid input');
             }
 
             __dirname = cwd();
