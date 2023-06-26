@@ -3,8 +3,7 @@ import { createInterface } from 'node:readline/promises'
 import { getUserName, welcome, goodbye } from './helpers/userHelper.js'
 import { printWorkingDirectory } from './helpers/fileHelper.js'
 import { goUp, goToDirectory, list } from './handlers/navigation.js'
-
-
+import { readFile, createEmptyFile } from './handlers/file.js'
 
 let __dirname = cwd();
 const args = argv.slice(2);
@@ -30,14 +29,20 @@ try {
 
             switch (command) {
                 case 'up':
-                    goUp(__dirname)
-                    break
+                    goUp(__dirname);
+                    break;
                 case 'cd':
-                    goToDirectory(args[0])
-                    break
+                    goToDirectory(args[0]);
+                    break;
                 case 'ls':
-                    await list(__dirname)
-                    break
+                    await list(__dirname);
+                    break;
+                case 'cat':
+                    await readFile(args[0]);
+                    break;
+                case 'add':
+                    await createEmptyFile(args[0])
+                    break;
 
                 default: console.log('Invalid input')
                     break
