@@ -9,3 +9,9 @@ async function createEmptyFile(fileName) {
     await fd.close();
 }
 
+async function renameFile(pathToFile, newFileName) {
+    const directory = dirname(pathToFile);
+    const newPathToFile = join(directory, newFileName);
+    rename(pathToFile, newPathToFile);
+}
+

@@ -43,6 +43,9 @@ try {
                 case 'add':
                     await createEmptyFile(args[0])
                     break;
+                case 'rn':
+                    await renameFile(args[0], args[1])
+                    break;
 
                 default: console.log('Invalid input')
                     break
