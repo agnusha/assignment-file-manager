@@ -1,10 +1,15 @@
 import { argv, cwd } from 'node:process';
-import { createInterface } from 'node:readline/promises'
-import { getUserName, welcome, goodbye } from './helpers/userHelper.js'
-import { printWorkingDirectory } from './helpers/fileHelper.js'
-import { goUp, goToDirectory, list } from './handlers/navigation.js'
-import { readFile, createEmptyFile, renameFile, copyFile, moveFile, deleteFile } from './handlers/file.js'
+import { createInterface } from 'node:readline/promises';
+
+import { getUserName, welcome, goodbye } from './helpers/userHelper.js';
+import { printWorkingDirectory } from './helpers/fileHelper.js';
+
+import { goUp, goToDirectory, list } from './handlers/navigation.js';
+import { readFile, createEmptyFile, renameFile, copyFile, moveFile, deleteFile } from './handlers/file.js';
 import { os } from './handlers/os.js'
+import { hashFile } from './handlers/hash.js'
+import { compressFile, decompressFile } from './handlers/compress.js'
+
 
 let __dirname = cwd();
 const args = argv.slice(2);
@@ -25,7 +30,6 @@ try {
     readerLine
         .on('line', async (line) => {
             const [command, ...args] = line.trim().split(' ');
-            __dirname = cwd();
 
             switch (command) {
                 case 'up':
@@ -37,6 +41,7 @@ try {
                 case 'ls':
                     await list(__dirname);
                     break;
+
                 case 'cat':
                     await readFile(args[0]);
                     break;
@@ -55,16 +60,29 @@ try {
                 case 'rm':
                     await deleteFile(args[0]);
                     break;
+
                 case 'os':
                     os(args[0]);
                     break;
+
+                case 'hash':
+                    await hashFile(args[0]);
+                    break
+                case 'compress':
+                    await compressFile(args[0], args[1]);
+                    break;
+                case 'decompress':
+                    await decompressFile(args[0], args[1]);
+                    break;
+
 
                 default:
                     console.log('Invalid command');
                     break;
             }
 
-            printWorkingDirectory(cwd());
+            __dirname = cwd();
+            printWorkingDirectory(__dirname);
             readerLine.prompt();
         })
         .on('SIGINT', () => readerLine.close())
@@ -72,5 +90,5 @@ try {
 
 }
 catch (error) {
-    console.error(error.message);
+    console.error(`Fatal error: ${error.message}`);
 }
