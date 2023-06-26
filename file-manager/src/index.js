@@ -4,10 +4,10 @@ import { getUserName, welcome, goodbye } from './helpers/userHelper.js'
 import { printWorkingDirectory } from './helpers/fileHelper.js'
 import { goUp, goToDirectory, list } from './handlers/navigation.js'
 import { readFile, createEmptyFile, renameFile, copyFile, moveFile, deleteFile } from './handlers/file.js'
+import { os } from './handlers/os.js'
 
 let __dirname = cwd();
 const args = argv.slice(2);
-
 
 try {
 
@@ -54,6 +54,9 @@ try {
                     break;
                 case 'rm':
                     await deleteFile(args[0]);
+                    break;
+                case 'os':
+                    os(args[0]);
                     break;
 
                 default:
