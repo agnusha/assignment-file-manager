@@ -14,12 +14,12 @@ npm run start -- --username=your_username
 
 ### Navigation & working directory (nwd)
 - up
-- cd path_to_directory
+- cd data
 - ls
 
 ### Basic operations with files
-- cat path_to_file
-- add new_file_name
+- cat data/test.md
+- add test_new.md
 - rn data/test.md newTest.md
 - cp data/test.md src/handlers
 - mv data/test.md src/handlers

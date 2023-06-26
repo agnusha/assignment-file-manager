@@ -1,19 +1,22 @@
 import { access } from 'node:fs/promises';
+import { InvalidInputException } from '../exceptions/InvalidInputException.js';
 
 function validateIsSet(arg) {
     if (isEmpty(arg)) {
-        throw new Error('Invalid input: value must be set');
+        throw new InvalidInputException('value must be set');
     }
+    return arg;
 }
 
 async function validateIsPathExist(arg, shouldExist = true) {
     validateIsSet(arg);
     if (shouldExist && !await isExists(arg)) {
-        throw new Error(`Invalid input: file ${arg} should exist`);
+        throw new InvalidInputException(`file ${arg} should exist`);
     }
     if (!shouldExist && await isExists(arg)) {
-        throw new Error(`Invalid input:  file ${arg} shouldn't exist`);
+        throw new InvalidInputException(`file ${arg} shouldn't exist`);
     }
+    return arg;
 }
 
 function isEmpty(str) {

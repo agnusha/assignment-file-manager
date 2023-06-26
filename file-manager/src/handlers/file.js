@@ -4,7 +4,6 @@ import { stdout } from 'node:process';
 import { open, rename, unlink } from 'node:fs/promises';
 import { finished, pipeline } from 'node:stream/promises';
 
-//TODO: add line at the end, use async pipe instead
 async function readFile(pathToFile) {
     const readStream = createReadStream(pathToFile);
     readStream.pipe(stdout);

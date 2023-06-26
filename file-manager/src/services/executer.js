@@ -1,9 +1,10 @@
 import { validateIsSet, validateIsPathExist } from '../validation/argValidator.js';
 import { goUp, goToDirectory, list } from '../handlers/navigation.js';
 import { readFile, createEmptyFile, renameFile, copyFile, moveFile, deleteFile } from '../handlers/file.js';
-import { os } from '../handlers/os.js'
-import { hashFile } from '../handlers/hash.js'
-import { compressFile, decompressFile } from '../handlers/compression.js'
+import { os } from '../handlers/os.js';
+import { hashFile } from '../handlers/hash.js';
+import { compressFile, decompressFile } from '../handlers/compression.js';
+import { InvalidInputException } from '../exceptions/InvalidInputException.js';
 
 
 async function executeLine(line, __dirname, readerLine) {
@@ -58,11 +59,16 @@ async function executeLine(line, __dirname, readerLine) {
                 readerLine.close();
                 return;
             default:
-                console.log('Invalid input: command is not a valid');
+                throw new InvalidInputException(`command ${command} is not supported`);
         }
     }
     catch (error) {
-        console.error(`Operation failed: ${error.message}`);
+        if (error instanceof InvalidInputException) {
+            console.error(error.message);
+        } else {
+            console.error(`Operation failed: ${error.message}`);
+        }
+
     }
 }
 
