@@ -20,10 +20,10 @@ npm run start -- --username=your_username
 ### Basic operations with files
 - cat path_to_file
 - add new_file_name
-- rn src/data/test.md newTest.md
-- cp src/data/test.md src/handlers
-- mv src/data/test.md src/handlers
-- rm src/data/test.md or rm src/handlers/test.md (after prev command)
+- rn data/test.md newTest.md
+- cp data/test.md src/handlers
+- mv data/test.md src/handlers
+- rm data/test.md or rm src/handlers/test.md (after prev command)
 
 ### Operating system info
 - os --EOL
@@ -33,6 +33,6 @@ npm run start -- --username=your_username
 - os --architecture
 
 ### Hash calculation
-- hash src/data/test.md
-- compress src/data/test.md src/data/test1.md
-- decompress src/data/test1.md src/data/test.md
+- hash data/test.md
+- compress data/test.md data/test1.md
+- decompress data/test1.md data/test.md
