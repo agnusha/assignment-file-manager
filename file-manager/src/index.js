@@ -3,6 +3,7 @@ import { createInterface } from 'node:readline/promises';
 
 import { getUserName, welcome, goodbye } from './helpers/userHelper.js';
 import { printWorkingDirectory } from './helpers/fileHelper.js';
+import { validateIsSet } from './validation/argValidator.js';
 
 import { goUp, goToDirectory, list } from './handlers/navigation.js';
 import { readFile, createEmptyFile, renameFile, copyFile, moveFile, deleteFile } from './handlers/file.js';
@@ -11,12 +12,13 @@ import { hashFile } from './handlers/hash.js'
 import { compressFile, decompressFile } from './handlers/compression.js'
 
 
-let __dirname = cwd();
+
 const args = argv.slice(2);
 
 try {
 
     const username = getUserName(args);
+    validateIsSet(username);
     welcome(username);
 
     const readerLine = createInterface({
@@ -24,12 +26,12 @@ try {
         output: process.stdout,
     });
 
-    printWorkingDirectory(__dirname);
-    readerLine.prompt();
+    let __dirname = updateDirname(readerLine);
 
     readerLine
         .on('line', async (line) => {
             const [command, ...args] = line.trim().split(' ');
+            validateIsSet(command);
 
             switch (command) {
                 case 'up':
@@ -81,9 +83,7 @@ try {
                     console.log('Invalid input');
             }
 
-            __dirname = cwd();
-            printWorkingDirectory(__dirname);
-            readerLine.prompt();
+            __dirname = updateDirname(readerLine);
         })
         .on('SIGINT', () => readerLine.close())
         .on('close', () => goodbye(username));
@@ -91,4 +91,13 @@ try {
 }
 catch (error) {
     console.error(`Fatal error: ${error.message}`);
+}
+
+function updateDirname(readerLine) {
+    const currentDirname = cwd();
+
+    printWorkingDirectory(currentDirname);
+    readerLine.prompt();
+
+    return currentDirname;
 }

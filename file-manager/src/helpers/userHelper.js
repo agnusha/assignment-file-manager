@@ -1,11 +1,5 @@
-
 function getUserName(args) {
-    const username = args.find(arg => arg.startsWith('--username='))?.split('=')[1];
-
-    if (username) {
-        return username;
-    }
-    else throw new Error('Invalid input');
+    return args.find(arg => arg.startsWith('--username='))?.split('=')[1];
 }
 
 function welcome(username) {
