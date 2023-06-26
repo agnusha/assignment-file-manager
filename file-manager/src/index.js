@@ -8,7 +8,7 @@ import { goUp, goToDirectory, list } from './handlers/navigation.js';
 import { readFile, createEmptyFile, renameFile, copyFile, moveFile, deleteFile } from './handlers/file.js';
 import { os } from './handlers/os.js'
 import { hashFile } from './handlers/hash.js'
-import { compressFile, decompressFile } from './handlers/compress.js'
+import { compressFile, decompressFile } from './handlers/compression.js'
 
 
 let __dirname = cwd();

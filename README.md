@@ -15,3 +15,8 @@ https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/file-ma
 - os --homedir
 - os --username
 - os --architecture
+
+###Hash calculation
+- hash src/data/test.md
+- compress path_to_file path_to_destination
+- decompress path_to_file path_to_destination
